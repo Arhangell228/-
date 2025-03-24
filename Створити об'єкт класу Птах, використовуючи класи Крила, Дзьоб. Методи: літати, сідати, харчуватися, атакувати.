@@ -1,0 +1,150 @@
+using System;
+using System.Text;
+
+// Клас, що представляє Крила птаха
+public class Krula
+{
+    // Перевизначення методу Equals для порівняння об'єктів Krula
+    public override bool Equals(object obj)
+    {
+        // Якщо об'єкт є посиланням на об'єкт Krula, то вони рівні
+        if (obj is Krula)
+        {
+            return true; // В даному випадку об'єкти Krula завжди рівні
+        }
+        return false; // Інакше вони не рівні
+    }
+
+    // Перевизначення методу GetHashCode для отримання хеш-коду об'єкта
+    public override int GetHashCode()
+    {
+        return base.GetHashCode(); // Повертає хеш-код базового класу
+    }
+
+    // Метод для махання крилами
+    public void Flap()
+    {
+        Console.WriteLine("Крила махають.");
+    }
+}
+
+// Клас, що представляє Дзьоб птаха
+public class dzob
+{
+    // Перевизначення методу Equals для порівняння об'єктів dzob
+    public override bool Equals(object obj)
+    {
+        // Якщо об'єкт є посиланням на об'єкт dzob, то вони рівні
+        if (obj is dzob)
+        {
+            return true; // Об'єкти dzob рівні
+        }
+        return false; // Інакше вони не рівні
+    }
+
+    // Перевизначення методу GetHashCode для отримання хеш-коду об'єкта
+    public override int GetHashCode()
+    {
+        return base.GetHashCode(); // Повертає хеш-код базового класу
+    }
+
+    // Метод для клювання
+    public void Peck()
+    {
+        Console.WriteLine("Дзьоб клює.");
+    }
+}
+
+// Клас, що представляє Птаха
+public class Bird
+{
+    // Властивості для Крил та Дзьоба птаха
+    public Krula Krula { get; set; }
+    public dzob dzob { get; set; }
+
+    // Конструктор птаха, який ініціалізує Крила і Дзьоб
+    public Bird()
+    {
+        // Налаштування кодування для коректного виведення українських символів
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+
+        // Створення об'єктів для Крил і Дзьоба
+        Krula = new Krula();
+        dzob = new dzob();
+    }
+
+    // Метод для летіння птаха
+    public void Fly()
+    {
+        Console.WriteLine("Птах летить.");
+        Krula.Flap(); // Викликаємо метод махання крил
+    }
+
+    // Метод для посадки птаха
+    public void sidatu()
+    {
+        Console.WriteLine("Птах сів.");
+    }
+
+    // Метод для харчування птаха
+    public void xarchyvatuca()
+    {
+        Console.WriteLine("Птах харчується.");
+        dzob.Peck(); // Викликаємо метод клювання
+    }
+
+    // Метод для атаки птаха
+    public void Attack()
+    {
+        Console.WriteLine("Птах атакує.");
+    }
+
+    // Перевизначення методу Equals для порівняння двох птахів
+    public override bool Equals(object obj)
+    {
+        // Якщо об'єкт є типом Bird, порівнюємо їх
+        if (obj is Bird)
+        {
+            Bird otherBird = (Bird)obj;
+            // Порівнюємо частини птаха: Крила та Дзьоб
+            return this.Krula.Equals(otherBird.Krula) && this.dzob.Equals(otherBird.dzob);
+        }
+        return false; // Якщо об'єкт не птах, повертаємо false
+    }
+
+    // Перевизначення методу GetHashCode для отримання хеш-коду птаха
+    public override int GetHashCode()
+    {
+        // Генерація хеш-коду на основі хеш-кодів частин птаха
+        return (Krula?.GetHashCode() ?? 0) ^ (dzob?.GetHashCode() ?? 0);
+    }
+
+    // Перевизначення методу ToString для представлення птаха у вигляді рядка
+    public override string ToString()
+    {
+        return $"Птах з крильцями і дзьобом: {Krula.GetType().Name}, {dzob.GetType().Name}";
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        // Створюємо об'єкт птаха
+        Bird bird = new Bird();
+        bird.Fly(); // Викликаємо метод летіння
+        bird.sidatu(); // Викликаємо метод посадки
+        bird.xarchyvatuca(); // Викликаємо метод харчування
+        bird.Attack(); // Викликаємо метод атаки
+
+        // Створюємо ще одного птаха
+        Bird anotherBird = new Bird();
+
+        // Перевірка на рівність двох птахів
+        Console.WriteLine(bird.Equals(anotherBird)); // Виведе true, оскільки частини птаха однакові
+
+        // Виводимо інформацію про птаха
+        Console.WriteLine(bird.ToString()); // Виведе типи частин птаха: "Krula, dzob"
+    }
+}
