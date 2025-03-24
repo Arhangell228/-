@@ -1,0 +1,108 @@
+using System; // Підключаємо стандартну бібліотеку для роботи з консоллю та математичними функціями
+
+// Абстрактний клас TVector, що визначає загальні методи для всіх векторів
+abstract class TVector
+{
+    // Абстрактний метод для обчислення довжини вектора
+    public abstract double Length();
+
+    // Абстрактний метод для обчислення скалярного добутку двох векторів
+    public abstract double DotProduct(TVector other);
+}
+
+// Клас Vector2D, що представляє вектор у 2D-просторі (R^2)
+class Vector2D : TVector
+{
+    // Поля (властивості) для збереження координат вектора
+    public double X { get; set; }
+    public double Y { get; set; }
+
+    // Конструктор класу для ініціалізації координат
+    public Vector2D(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+
+    // Перевизначений метод для обчислення довжини вектора (формула √(x² + y²))
+    public override double Length()
+    {
+        return Math.Sqrt(X * X + Y * Y);
+    }
+
+    // Перевизначений метод для обчислення скалярного добутку двох 2D-векторів (формула x1*x2 + y1*y2)
+    public override double DotProduct(TVector other)
+    {
+        if (other is Vector2D v) // Перевіряємо, чи інший об'єкт є вектором 2D
+            return X * v.X + Y * v.Y;
+        throw new ArgumentException("Vector dimensions do not match."); // Викидаємо помилку, якщо вектори різних вимірностей
+    }
+
+    // Перевизначення оператора "+" для додавання двох 2D-векторів
+    public static Vector2D operator +(Vector2D a, Vector2D b)
+    {
+        return new Vector2D(a.X + b.X, a.Y + b.Y);
+    }
+}
+
+// Клас Vector3D, що представляє вектор у 3D-просторі (R^3)
+class Vector3D : TVector
+{
+    // Поля (властивості) для збереження координат вектора
+    public double X { get; set; }
+    public double Y { get; set; }
+    public double Z { get; set; }
+
+    // Конструктор класу для ініціалізації координат
+    public Vector3D(double x, double y, double z)
+    {
+        X = x;
+        Y = y;
+        Z = z;
+    }
+
+    // Перевизначений метод для обчислення довжини вектора (формула √(x² + y² + z²))
+    public override double Length()
+    {
+        return Math.Sqrt(X * X + Y * Y + Z * Z);
+    }
+
+    // Перевизначений метод для обчислення скалярного добутку двох 3D-векторів (формула x1*x2 + y1*y2 + z1*z2)
+    public override double DotProduct(TVector other)
+    {
+        if (other is Vector3D v) // Перевіряємо, чи інший об'єкт є вектором 3D
+            return X * v.X + Y * v.Y + Z * v.Z;
+        throw new ArgumentException("Vector dimensions do not match."); // Викидаємо помилку, якщо вектори різних вимірностей
+    }
+
+    // Перевизначення оператора "+" для додавання двох 3D-векторів
+    public static Vector3D operator +(Vector3D a, Vector3D b)
+    {
+        return new Vector3D(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+    }
+}
+
+// Основний клас програми
+class Program
+{
+    static void Main()
+    {
+        // Створюємо вектори у 2D-просторі
+        Vector2D a = new Vector2D(1, 2);
+        Vector2D b = new Vector2D(3, 4);
+        Vector2D c = new Vector2D(5, 6);
+        Vector2D d = new Vector2D(7, 8);
+
+        // Виконуємо додавання векторів відповідно до виразу: (a, b) + (c, d)
+        Vector2D sum = (a + b) + (c + d);
+
+        // Обчислюємо довжину вектора a (|a|)
+        double lengthA = a.Length();
+
+        // Підсумковий вираз S = |(a, b) + (c, d)| + |a|
+        double result = sum.Length() + lengthA;
+
+        // Виводимо результат у консоль
+        Console.WriteLine($"S = {result}");
+    }
+}
